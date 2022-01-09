@@ -1,6 +1,8 @@
 .pixel{
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+
 }
 .pixel-rows{
     display: flex;
@@ -9,11 +11,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;
+    flex-wrap: wrap;
 }
 .grid{
-  
+    position: relative;
+
 }
 .function-form{
     margin: 50px;
+}
+.y-coor{
+    position: absolute;
+    left: -20px;
+    width: 20px;
+    top: 30%;
+    
 }
