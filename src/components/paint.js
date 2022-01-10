@@ -6,9 +6,9 @@
 var _ = require('lodash')
 
 // The colors this grid allows
- var COLORS = [
-    'red', 
-    'blue', 
+var COLORS = [
+    'red',
+    'blue',
     'green'
 ]
 exports.COLORS = COLORS
@@ -24,21 +24,21 @@ exports.COLORS = COLORS
  */
 function floodFillAt(grid, x, y, color) {
     // TODO 
-     x = parseInt(x)
-     y = parseInt(y)
-    for(let i=0; i<grid.length;i++){
-        for(let j=0;j<grid[i].length;j++){
-            if((i-y)<2 && (y-i)<2){
-                if((j-x)<2&&(x-j)<2){
-                    if(grid[i][j]){
-                        grid[i][j]= color
+    x = parseInt(x)
+    y = parseInt(y)
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            if ((i - y) < 2 && (y - i) < 2) {
+                if ((j - x) < 2 && (x - j) < 2) {
+                    if (grid[i][j]) {
+                        grid[i][j] = color
                     }
                 }
             }
         }
     }
-        return grid
-    }
+    return grid
+}
 
 
 
@@ -56,14 +56,17 @@ function generateRandomGrid(rows, columns) {
     // The 2D array which will be used to store the randomly generated color values
     var grid = []
     // Move row by row and populate each point in the row with a random color
-    for(var rowIndex=0; rowIndex<rows; rowIndex++) {
+    for (var rowIndex = 0; rowIndex < rows; rowIndex++) {
         // Create the array at this row which represents the column
         grid[rowIndex] = []
 
         // Go through each point in the column
-        for(var columnIndex=0; columnIndex<columns; columnIndex++) {
+        for (var columnIndex = 0; columnIndex < columns; columnIndex++) {
             // Generate the random color for the point at rowIndex,columnIndex
-            var colorForCurrentCoord = COLORS[_.random(0, 2)]
+
+            // var colorForCurrentCoord = COLORS[_.random(0, 2)]
+            // CHange to white board
+            var colorForCurrentCoord = '#fcfcfc'
 
             // Set the color
             grid[rowIndex][columnIndex] = colorForCurrentCoord
@@ -71,7 +74,7 @@ function generateRandomGrid(rows, columns) {
     }
 
     // Return the generated grid
-    console.log('grid',grid);
+    console.log('grid', grid);
 
     return grid
 }
