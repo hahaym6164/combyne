@@ -1,0 +1,30 @@
+.pixel{
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+
+}
+.pixel-rows{
+    display: flex;
+}
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    flex-wrap: wrap;
+}
+.grid{
+    position: relative;
+
+}
+.function-form{
+    margin: 50px;
+}
+.y-coor{
+    position: absolute;
+    left: -20px;
+    width: 20px;
+    top: 30%;
+    
+}
