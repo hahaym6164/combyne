@@ -14,20 +14,46 @@ export default class Main extends Component {
             X: 0,
             Y: 0,
             inputFormatUsable: true,
+            selectedColor: 'default',
         }
 
     }
+
     btnClick(e) {
+
         e.preventDefault()
         let x = e.target[1].value
         let y = e.target[2].value
         let color = e.target[0].value
         let grid = this.state.grid
-        if (y >= 0 && y <= 19 && x >= 0 && x <= 19) {
+
+        if (color === 'default') {
+            this.setState({
+                selectedColor: 'not selected'
+            })
+        } else {
+            this.setState({
+                selectedColor: color,
+            })
+        }
+        if (x && y && y >= 0 && y <= 19 && x >= 0 && x <= 19) {
+
             this.setState({
                 inputFormatUsable: true,
-                grid: floodFillAt(grid, x, y, color)
             })
+
+            if (color === 'default') {
+                this.setState({
+                    selectedColor: 'not selected'
+                })
+            } else {
+                this.setState({
+                    selectedColor: color,
+                    inputFormatUsable: true,
+                    grid: floodFillAt(grid, x, y, color)
+                })
+            }
+
         } else {
             this.setState({
                 inputFormatUsable: false
@@ -37,10 +63,23 @@ export default class Main extends Component {
     }
     pixelOnClick(e) {
         let coor = e.target.id.split(',')
+        let x = coor[1]
+        let y = coor[0]
+        let grid = this.state.grid
         this.setState({
-            X: coor[1],
-            Y: coor[0]
+            X: x,
+            Y: y
         })
+        if (this.state.selectedColor === 'default' || this.state.selectedColor === 'not selected') {
+            this.setState({
+                selectedColor: 'not selected'
+            })
+        } else {
+            this.setState({
+                grid: floodFillAt(grid, x, y, this.state.selectedColor)
+            })
+        }
+
     }
     inputChange(e) {
         let value = e.target.value
@@ -54,12 +93,11 @@ export default class Main extends Component {
                 Y: value
             })
         }
-        console.log(value, e.target.id);
     }
     render() {
-        let { grid, colors, inputFormatUsable } = this.state
+        let { grid, colors, inputFormatUsable, selectedColor } = this.state
         return (
-            <div className='title'>
+            <div className='title container-sm'>
                 <h1>This is a paint board</h1>
                 <p>Simply select the pixel on the board or enter the coordinate and paint!</p>
 
@@ -70,8 +108,12 @@ export default class Main extends Component {
 
                         <Form.Select onChange={(e) => {
                             // console.log(e, e.innerText)
+                            this.setState({
+                                selectedColor: e.target.value
+                            })
+
                         }}>
-                            <option>Select Color</option>
+                            <option defaultValue hidden value='default'>Select Color</option>
 
                             {colors && colors.map((color, index) => (
                                 // <Dropdown.Item value={color} key={index} style={{ background: color, color: 'white' }}>Something else</Dropdown.Item>
@@ -80,25 +122,27 @@ export default class Main extends Component {
 
 
                         </Form.Select>
-                        <br />
-                        {inputFormatUsable ? '' : <p style={{ color: 'red' }}> ERROR! The inputs should be numbers<br /> between and including 0 and 19 </p>}
-                        <div>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" id="inputGroup-sizing-sm">X</span>
-                                </div>
-                                <input id="X" className='coor' onChange={this.inputChange.bind(this)} value={this.state.X} type="text" className="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" id="inputGroup-sizing-sm">Y</span>
-                                </div>
-                                <input id="Y" className='coor' onChange={this.inputChange.bind(this)} value={this.state.Y} type="text" className="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
+                        <p style={{ color: 'red', width: ' 200px', visibility: selectedColor === 'not selected' ? 'visible' : 'hidden' }}> Please select a color first </p>
 
-                            {/* X <input id="X" className='coor' onChange={this.inputChange.bind(this)} value={this.state.X} /> <br />
-                            Y <input id="Y" className='coor' onChange={this.inputChange.bind(this)} value={this.state.Y} /> <br /> */}
+
+
+                        <div className="input-group input-group-sm mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-sm">X</span>
+                            </div>
+                            <input id="X" className='coor' onChange={this.inputChange.bind(this)} value={this.state.X} type="text" className="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
                         </div>
+                        <div className="input-group input-group-sm mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroup-sizing-sm">Y</span>
+                            </div>
+                            <input id="Y" className='coor' onChange={this.inputChange.bind(this)} value={this.state.Y} type="text" className="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                        </div>
+                        {inputFormatUsable ? '' : <p style={{ color: 'red', width: ' 200px' }}> ERROR! The inputs should be numbers  0 - 19 </p>}
+
+                        {/* X <input id="X" className='coor' onChange={this.inputChange.bind(this)} value={this.state.X} /> <br />
+                            Y <input id="Y" className='coor' onChange={this.inputChange.bind(this)} value={this.state.Y} /> <br /> */}
+
                         <Button type="submit" variant="outline-dark">Paint!</Button>
 
                         {/* <input type="submit" value="Submit" /> */}

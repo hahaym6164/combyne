@@ -73,8 +73,7 @@ function generateRandomGrid(rows, columns) {
         }
     }
 
-    // Return the generated grid
-    console.log('grid', grid);
+
 
     return grid
 }
